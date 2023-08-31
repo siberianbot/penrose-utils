@@ -97,7 +97,7 @@ public class AssimpProxy : IDisposable
                 position,
                 normal,
                 new Vector3(color.X, color.Y, color.Z),
-                new Vector2(uvw.X, uvw.Y)
+                new Vector2(1.0f - uvw.X, uvw.Y)
             );
 
             vertices.Add(vertex);
