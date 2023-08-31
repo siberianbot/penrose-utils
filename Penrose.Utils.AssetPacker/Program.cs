@@ -14,6 +14,7 @@ public static class Program
 
         PackMeshOperationHandler packMeshOperationHandler = new PackMeshOperationHandler(assimpProxy);
         PackImageOperationHandler packImageOperationHandler = new PackImageOperationHandler();
+        PackShaderOperationHandler packShaderOperationHandler = new PackShaderOperationHandler();
 
         Option<bool> forceOption = new Option<bool>(new[] { "-f", "--force" }, () => false, "Overwrite existing asset file");
 
@@ -31,7 +32,7 @@ public static class Program
             inputArg, outputArg, forceOption
         );
 
-        Command packImageCommand = new Command("pack-image", "Read mesh file and convert to Penrose Asset format");
+        Command packImageCommand = new Command("pack-image", "Read image file and convert to Penrose Asset format");
         packImageCommand.AddOption(forceOption);
         packImageCommand.AddArgument(inputArg);
         packImageCommand.AddArgument(outputArg);
@@ -40,8 +41,18 @@ public static class Program
             inputArg, outputArg, forceOption
         );
 
+        Command packShaderCommand = new Command("pack-shader", "Read shader file and convert to Penrose Asset format");
+        packShaderCommand.AddOption(forceOption);
+        packShaderCommand.AddArgument(inputArg);
+        packShaderCommand.AddArgument(outputArg);
+        packShaderCommand.SetHandler(
+            (input, output, overwrite) => packShaderOperationHandler.HandleAsync(input, output, overwrite),
+            inputArg, outputArg, forceOption
+        );
+
         rootCommand.AddCommand(packMeshCommand);
         rootCommand.AddCommand(packImageCommand);
+        rootCommand.AddCommand(packShaderCommand);
 
         Parser parser = new CommandLineBuilder(rootCommand)
             .UseDefaults()

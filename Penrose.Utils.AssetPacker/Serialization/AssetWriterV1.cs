@@ -44,6 +44,15 @@ public class AssetWriterV1 : IAssetWriter
         _writer.Write(image.Data);
     }
 
+    public void WriteShader(Header header, Shader shader)
+    {
+        WriteMagic();
+        WriteHeader(header);
+
+        _writer.Write(BitConverter.GetBytes(shader.Data.Length));
+        _writer.Write(shader.Data);
+    }
+
     private void WriteMagic()
     {
         _writer.Write(new[] { 'P', 'n', 'r', 's' });

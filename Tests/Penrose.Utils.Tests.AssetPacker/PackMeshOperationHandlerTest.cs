@@ -24,6 +24,9 @@ public class PackMeshOperationHandlerTest : IDisposable
         byte[] actualFile = await File.ReadAllBytesAsync(outputFile);
 
         Assert.True(actualFile.SequenceEqual(expectedFile));
+        
+        // cleanup
+        File.Delete(outputFile);
     }
 
     [Fact]
@@ -42,6 +45,9 @@ public class PackMeshOperationHandlerTest : IDisposable
         byte[] actualFile = await File.ReadAllBytesAsync(outputFile);
 
         Assert.True(actualFile.SequenceEqual(expectedFile));
+        
+        // cleanup
+        File.Delete(outputFile);
     }
 
     public void Dispose()
