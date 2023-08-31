@@ -13,6 +13,7 @@ public static class Program
         using AssimpProxy assimpProxy = new AssimpProxy();
 
         PackMeshOperationHandler packMeshOperationHandler = new PackMeshOperationHandler(assimpProxy);
+        PackImageOperationHandler packImageOperationHandler = new PackImageOperationHandler();
 
         Option<bool> forceOption = new Option<bool>(new[] { "-f", "--force" }, () => false, "Overwrite existing asset file");
 
@@ -30,7 +31,17 @@ public static class Program
             inputArg, outputArg, forceOption
         );
 
+        Command packImageCommand = new Command("pack-image", "Read mesh file and convert to Penrose Asset format");
+        packImageCommand.AddOption(forceOption);
+        packImageCommand.AddArgument(inputArg);
+        packImageCommand.AddArgument(outputArg);
+        packImageCommand.SetHandler(
+            (input, output, overwrite) => packImageOperationHandler.HandleAsync(input, output, overwrite),
+            inputArg, outputArg, forceOption
+        );
+
         rootCommand.AddCommand(packMeshCommand);
+        rootCommand.AddCommand(packImageCommand);
 
         Parser parser = new CommandLineBuilder(rootCommand)
             .UseDefaults()

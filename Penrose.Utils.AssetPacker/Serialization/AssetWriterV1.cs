@@ -32,6 +32,18 @@ public class AssetWriterV1 : IAssetWriter
         }
     }
 
+    public void WriteImage(Header header, Image image)
+    {
+        WriteMagic();
+        WriteHeader(header);
+
+        _writer.Write(BitConverter.GetBytes(image.Width));
+        _writer.Write(BitConverter.GetBytes(image.Height));
+        _writer.Write(image.Channels);
+        _writer.Write(image.Data.Length);
+        _writer.Write(image.Data);
+    }
+
     private void WriteMagic()
     {
         _writer.Write(new[] { 'P', 'n', 'r', 's' });
