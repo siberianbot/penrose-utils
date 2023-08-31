@@ -3,7 +3,6 @@ using Penrose.Utils.AssetPacker.Types;
 using Silk.NET.Assimp;
 using AssimpFace = Silk.NET.Assimp.Face;
 using AssimpMesh = Silk.NET.Assimp.Mesh;
-using Face = Penrose.Utils.AssetPacker.Types.Face;
 using Mesh = Penrose.Utils.AssetPacker.Types.Mesh;
 
 namespace Penrose.Utils.AssetPacker.Common;
@@ -76,7 +75,7 @@ public class AssimpProxy : IDisposable
     private unsafe Mesh ProcessMesh(AssimpMesh* mesh)
     {
         List<Vertex> vertices = new List<Vertex>();
-        List<Face> faces = new List<Face>();
+        List<uint> indices = new List<uint>();
 
         for (uint idx = 0; idx < mesh->MNumVertices; idx++)
         {
@@ -113,17 +112,13 @@ public class AssimpProxy : IDisposable
                 throw new Exception($"Face #{idx} have {face.MNumIndices} vertices (supported only 3 vertices per face)");
             }
 
-            List<uint> indices = new List<uint>(3);
-
             for (uint indexIdx = 0; indexIdx < face.MNumIndices; indexIdx++)
             {
                 indices.Add(face.MIndices[indexIdx]);
             }
-
-            faces.Add(new Face(indices));
         }
 
-        return new Mesh(vertices, faces);
+        return new Mesh(vertices, indices);
     }
 
     public void Dispose()

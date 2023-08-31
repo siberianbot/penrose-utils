@@ -19,16 +19,16 @@ public class AssetWriterV1 : IAssetWriter
         WriteHeader(header);
 
         _writer.Write(BitConverter.GetBytes(mesh.Vertices.Count));
-        _writer.Write(BitConverter.GetBytes(mesh.Faces.Count));
+        _writer.Write(BitConverter.GetBytes(mesh.Indices.Count));
 
         foreach (Vertex vertex in mesh.Vertices)
         {
             WriteVertex(vertex);
         }
 
-        foreach (Face face in mesh.Faces)
+        foreach (uint index in mesh.Indices)
         {
-            WriteFace(face);
+            _writer.Write(BitConverter.GetBytes(index));
         }
     }
 
@@ -70,13 +70,6 @@ public class AssetWriterV1 : IAssetWriter
         WriteVector3(vertex.Normal);
         WriteVector3(vertex.Color);
         WriteVector2(vertex.UV);
-    }
-
-    private void WriteFace(Face face)
-    {
-        _writer.Write(BitConverter.GetBytes(face.Indices[0]));
-        _writer.Write(BitConverter.GetBytes(face.Indices[1]));
-        _writer.Write(BitConverter.GetBytes(face.Indices[2]));
     }
 
     private void WriteVector2(Vector2 value)
