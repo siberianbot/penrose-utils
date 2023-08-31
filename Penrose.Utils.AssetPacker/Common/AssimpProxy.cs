@@ -1,12 +1,12 @@
 using System.Numerics;
-using Penrose.Assets.AssetPacker.Types;
+using Penrose.Utils.AssetPacker.Types;
 using Silk.NET.Assimp;
 using AssimpFace = Silk.NET.Assimp.Face;
 using AssimpMesh = Silk.NET.Assimp.Mesh;
-using Face = Penrose.Assets.AssetPacker.Types.Face;
-using Mesh = Penrose.Assets.AssetPacker.Types.Mesh;
+using Face = Penrose.Utils.AssetPacker.Types.Face;
+using Mesh = Penrose.Utils.AssetPacker.Types.Mesh;
 
-namespace Penrose.Assets.AssetPacker.Common;
+namespace Penrose.Utils.AssetPacker.Common;
 
 public class AssimpProxy : IDisposable
 {

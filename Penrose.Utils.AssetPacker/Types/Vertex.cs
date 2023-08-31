@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Penrose.Assets.AssetPacker.Types;
+namespace Penrose.Utils.AssetPacker.Types;
 
 public record Vertex
 {

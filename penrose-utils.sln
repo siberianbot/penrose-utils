@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Penrose.Assets.AssetPacker", "Penrose.Assets.AssetPacker\Penrose.Assets.AssetPacker.csproj", "{AEC4813F-FE4F-4684-8406-F5577B68F0DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Penrose.Utils.AssetPacker", "Penrose.Utils.AssetPacker\Penrose.Utils.AssetPacker.csproj", "{AEC4813F-FE4F-4684-8406-F5577B68F0DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E625E9CC-2D35-4E7D-AAA7-D3D8450E23AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

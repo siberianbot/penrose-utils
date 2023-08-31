@@ -1,8 +1,8 @@
-using Penrose.Assets.AssetPacker.Common;
-using Penrose.Assets.AssetPacker.Serialization;
-using Penrose.Assets.AssetPacker.Types;
+using Penrose.Utils.AssetPacker.Common;
+using Penrose.Utils.AssetPacker.Serialization;
+using Penrose.Utils.AssetPacker.Types;
 
-namespace Penrose.Assets.AssetPacker.Handlers;
+namespace Penrose.Utils.AssetPacker.Handlers;
 
 public class PackMeshOperationHandler
 {
@@ -24,7 +24,8 @@ public class PackMeshOperationHandler
 
         await using IAssetWriter assetWriter = AssetWriterV1.FromPath(outputPath, overwrite);
 
-        assetWriter.WriteHeader();
-        assetWriter.WriteMesh(meshes.First());
+        Header header = new Header(AssetVersion.V1, AssetType.Mesh);
+
+        assetWriter.WriteMesh(header, meshes.First());
     }
 }

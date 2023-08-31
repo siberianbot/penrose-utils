@@ -1,10 +1,10 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
-using Penrose.Assets.AssetPacker.Common;
-using Penrose.Assets.AssetPacker.Handlers;
+using Penrose.Utils.AssetPacker.Common;
+using Penrose.Utils.AssetPacker.Handlers;
 
-namespace Penrose.Assets.AssetPacker;
+namespace Penrose.Utils.AssetPacker;
 
 public static class Program
 {

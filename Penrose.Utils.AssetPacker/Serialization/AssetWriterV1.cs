@@ -1,8 +1,8 @@
 using System.Numerics;
 using System.Text;
-using Penrose.Assets.AssetPacker.Types;
+using Penrose.Utils.AssetPacker.Types;
 
-namespace Penrose.Assets.AssetPacker.Serialization;
+namespace Penrose.Utils.AssetPacker.Serialization;
 
 public class AssetWriterV1 : IAssetWriter
 {
@@ -13,14 +13,11 @@ public class AssetWriterV1 : IAssetWriter
         _writer = new BinaryWriter(stream, Encoding.UTF8);
     }
 
-    public void WriteHeader()
+    public void WriteMesh(Header header, Mesh mesh)
     {
-        _writer.Write(new[] { 'P', 'n', 'r', 's' });
-        _writer.Write((byte)0x01);
-    }
+        WriteMagic();
+        WriteHeader(header);
 
-    public void WriteMesh(Mesh mesh)
-    {
         _writer.Write(BitConverter.GetBytes(mesh.Vertices.Count));
         _writer.Write(BitConverter.GetBytes(mesh.Faces.Count));
 
@@ -33,6 +30,17 @@ public class AssetWriterV1 : IAssetWriter
         {
             WriteFace(face);
         }
+    }
+
+    private void WriteMagic()
+    {
+        _writer.Write(new[] { 'P', 'n', 'r', 's' });
+    }
+
+    private void WriteHeader(Header header)
+    {
+        _writer.Write((byte)header.Version);
+        _writer.Write((byte)header.Type);
     }
 
     private void WriteVertex(Vertex vertex)
