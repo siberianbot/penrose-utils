@@ -4,5 +4,6 @@ public enum AssetType : byte
 {
     Shader = 0x01,
     Mesh = 0x02,
-    Image = 0x03
+    Image = 0x03,
+    UILayout = 0x04
 }

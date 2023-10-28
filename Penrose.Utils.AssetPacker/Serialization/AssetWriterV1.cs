@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Text;
+using Penrose.Utils.AssetPacker.Common;
 using Penrose.Utils.AssetPacker.Types;
 
 namespace Penrose.Utils.AssetPacker.Serialization;
@@ -10,14 +11,22 @@ public class AssetWriterV1 : IAssetWriter
 
     private AssetWriterV1(Stream stream)
     {
-        _writer = new BinaryWriter(stream, Encoding.UTF8);
+        Stream = stream;
+        _writer = new BinaryWriter(stream, Encoding.UTF8, true);
     }
 
-    public void WriteMesh(Header header, Mesh mesh)
+    public Stream Stream { get; }
+
+    public void WriteHeader(Header header)
     {
         WriteMagic();
-        WriteHeader(header);
 
+        _writer.Write((byte)header.Version);
+        _writer.Write((byte)header.Type);
+    }
+
+    public void WriteMesh(Mesh mesh)
+    {
         _writer.Write(BitConverter.GetBytes(mesh.Vertices.Count));
         _writer.Write(BitConverter.GetBytes(mesh.Indices.Count));
 
@@ -32,11 +41,8 @@ public class AssetWriterV1 : IAssetWriter
         }
     }
 
-    public void WriteImage(Header header, Image image)
+    public void WriteImage(Image image)
     {
-        WriteMagic();
-        WriteHeader(header);
-
         _writer.Write(BitConverter.GetBytes(image.Width));
         _writer.Write(BitConverter.GetBytes(image.Height));
         _writer.Write(image.Channels);
@@ -44,24 +50,19 @@ public class AssetWriterV1 : IAssetWriter
         _writer.Write(image.Data);
     }
 
-    public void WriteShader(Header header, Shader shader)
+    public void WriteShaderInfo(Shader shader)
     {
-        WriteMagic();
-        WriteHeader(header);
+        _writer.Write(BitConverter.GetBytes(shader.ContentLength));
+    }
 
-        _writer.Write(BitConverter.GetBytes(shader.Data.Length));
-        _writer.Write(shader.Data);
+    public void WriteUILayoutInfo(UILayout uiLayout)
+    {
+        _writer.Write(BitConverter.GetBytes(uiLayout.ContentLength));
     }
 
     private void WriteMagic()
     {
         _writer.Write(new[] { 'P', 'n', 'r', 's' });
-    }
-
-    private void WriteHeader(Header header)
-    {
-        _writer.Write((byte)header.Version);
-        _writer.Write((byte)header.Type);
     }
 
     private void WriteVertex(Vertex vertex)
@@ -89,7 +90,7 @@ public class AssetWriterV1 : IAssetWriter
     {
         if (!overwrite && File.Exists(path))
         {
-            throw new Exception($"File {path} already exists"); // TODO: introduce exception
+            throw new PackerException($"File {path} already exists");
         }
 
         Stream stream = new FileStream(path, overwrite ? FileMode.Create : FileMode.CreateNew);
@@ -100,10 +101,12 @@ public class AssetWriterV1 : IAssetWriter
     public void Dispose()
     {
         _writer.Dispose();
+        Stream.Dispose();
     }
 
     public async ValueTask DisposeAsync()
     {
         await _writer.DisposeAsync();
+        await Stream.DisposeAsync();
     }
 }

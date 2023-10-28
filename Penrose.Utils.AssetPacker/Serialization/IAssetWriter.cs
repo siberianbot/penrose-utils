@@ -4,9 +4,15 @@ namespace Penrose.Utils.AssetPacker.Serialization;
 
 public interface IAssetWriter : IDisposable, IAsyncDisposable
 {
-    public void WriteMesh(Header header, Mesh mesh);
+    public Stream Stream { get; }
 
-    public void WriteImage(Header header, Image image);
+    public void WriteHeader(Header header);
 
-    public void WriteShader(Header header, Shader shader);
+    public void WriteMesh(Mesh mesh);
+
+    public void WriteImage(Image image);
+
+    public void WriteShaderInfo(Shader shader);
+
+    public void WriteUILayoutInfo(UILayout uiLayout);
 }
